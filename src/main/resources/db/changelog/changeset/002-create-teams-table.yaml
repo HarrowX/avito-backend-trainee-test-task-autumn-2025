@@ -42,7 +42,9 @@ databaseChangeLog:
                   defaultValue: NOW()
                   constraints:
                     nullable: false
-
+        - addUniqueConstraint:
+            tableName: user_teams
+            columnNames: user_id
         - addPrimaryKey:
             tableName: user_teams
             columnNames: user_id, team_id
