@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-pull-requests-table
+      author: Alexandr Soloviev
+      changes:
+        - createTable:
+            tableName: pull_requests
+            columns:
+              - column:
+                  name: pull_request_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: pull_request_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    checkConstraint: "status IN ('OPEN', 'MERGED')"
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_pull_request_author
+                    references: users(user_id)
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValue: NOW()
+                  constraints:
+                    nullable: false
+              - column:
+                  name: merged_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: reviewer_pull_requests
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_teams_user
+                    references: users(user_id)
+              - column:
+                  name: pull_request_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_teams_team
+                    references: pull_requests(pull_request_id)
+        - addPrimaryKey:
+            tableName: reviewer_pull_requests
+            columnNames: user_id, pull_request_id

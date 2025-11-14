@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: prmanager
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  mvc:
+    static-path-pattern: /**
+  web:
+    resources:
+      static-locations: classpath:/static/
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    url: /openapi.yml
+    config-url: /api-docs/swagger-config
+    disable-swagger-default-url: false

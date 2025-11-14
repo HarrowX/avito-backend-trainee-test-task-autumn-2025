@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-teams-table
+      author: Alexandr Soloviev
+      changes:
+        - createTable:
+            tableName: teams
+            columns:
+              - column:
+                  name: team_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: team_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+        - createTable:
+            tableName: user_teams
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_teams_user
+                    references: users(user_id)
+              - column:
+                  name: team_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_teams_team
+                    references: teams(team_id)
+              - column:
+                  name: joined_at
+                  type: timestamp
+                  defaultValue: NOW()
+                  constraints:
+                    nullable: false
+
+        - addPrimaryKey:
+            tableName: user_teams
+            columnNames: user_id, team_id
